@@ -2,11 +2,23 @@ import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { createFormAdd } from './form.add';
+import { Product } from '../types/product';
 
 describe('GIVEN <createFormAdd> component', () => {
+    const products: Product[] = [
+        {
+            id: 1,
+            name: 'Producto 1',
+            description: 'Descripción de producto 1',
+            category: 'mobile',
+            price: 200,
+            hasPromo: true,
+        },
+    ];
+
     beforeEach(() => {
         document.body.innerHTML = '';
-        createFormAdd();
+        createFormAdd(products);
     });
 
     afterEach(() => {
@@ -48,16 +60,16 @@ describe('GIVEN <createFormAdd> component', () => {
         await userEvent.click(screen.getByRole('button', { name: /Crear/i }));
         expect(spy).toBeCalled();
 
-        // expect(spy).toHaveBeenCalledWith(
-        //     'Form submitted:',
-        //     expect.objectContaining({
-        //         id: 1,
-        //         name: 'Patata',
-        //         description: 'Una Las mejores patatas de la comarca',
-        //         price: 1000,
-        //         hasPromo: true,
-        //         category: 'components',
-        //     }),
-        // );
+        expect(spy).toHaveBeenCalledWith(
+            'Form submitted:',
+            expect.objectContaining({
+                id: 2,
+                name: 'Patata',
+                description: 'Las mejores patatas de la comarca',
+                price: 1000,
+                hasPromo: true,
+                category: 'components',
+            }),
+        );
     });
 });
