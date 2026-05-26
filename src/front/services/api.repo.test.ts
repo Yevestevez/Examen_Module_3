@@ -37,4 +37,35 @@ describe('GIVEN <ApiRepo> class', () => {
             });
         });
     });
+
+    describe('WHEN the method <createProduct> is called', () => {
+        describe('AND response is OK', () => {
+            beforeEach(() => {
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+                    ok: true,
+                    json: vi.fn().mockResolvedValueOnce({}),
+                } as unknown as Response);
+            });
+
+            test('THEN it should return the fetch data', async () => {
+                const product = await repo.createProduct({
+                    name: 'Producto 1',
+                });
+                expect(fetch).toHaveBeenCalled();
+                expect(product).toBeInstanceOf(Object);
+            });
+        });
+
+        describe('AND response is NOT OK', () => {
+            beforeEach(() => {
+                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                    ok: false,
+                }) as unknown as Response;
+            });
+
+            test('THEN it should reject the promise', () => {
+                expect(repo.createProduct({})).rejects.toThrow();
+            });
+        });
+    });
 });
