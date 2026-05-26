@@ -68,4 +68,66 @@ describe('GIVEN <ApiRepo> class', () => {
             });
         });
     });
+
+    describe('WHEN the method <updateProduct> is called', () => {
+        describe('AND response is OK', () => {
+            beforeEach(() => {
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+                    ok: true,
+                    json: vi.fn().mockResolvedValueOnce({}),
+                } as unknown as Response);
+            });
+
+            test('THEN it should return the fetch data', async () => {
+                const product = await repo.updateProduct(1, {
+                    name: 'Updated product',
+                });
+                expect(fetch).toHaveBeenCalled();
+                expect(product).toBeInstanceOf(Object);
+            });
+        });
+
+        describe('AND response is NOT OK', () => {
+            beforeEach(() => {
+                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                    ok: false,
+                }) as unknown as Response;
+            });
+
+            test('THEN it should reject the promise', () => {
+                expect(
+                    repo.updateProduct(1, { name: 'Producto 1' }),
+                ).rejects.toThrow();
+            });
+        });
+    });
+
+    describe('WHEN the method <deleteProduct> is called', () => {
+        describe('AND response is OK', () => {
+            beforeEach(() => {
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+                    ok: true,
+                    json: vi.fn().mockResolvedValueOnce({}),
+                } as unknown as Response);
+            });
+
+            test('THEN it should return the fetch data', async () => {
+                const product = await repo.deleteProduct(1);
+                expect(fetch).toHaveBeenCalled();
+                expect(product).toBeInstanceOf(Object);
+            });
+        });
+
+        describe('AND response is NOT OK', () => {
+            beforeEach(() => {
+                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                    ok: false,
+                }) as unknown as Response;
+            });
+
+            test('THEN it should reject the promise', () => {
+                expect(repo.deleteProduct(1)).rejects.toThrow();
+            });
+        });
+    });
 });
