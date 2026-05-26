@@ -1,4 +1,3 @@
-import { response } from 'express';
 import { ApiRepo } from './api.repo';
 
 describe('GIVEN <ApiRepo> class', () => {
