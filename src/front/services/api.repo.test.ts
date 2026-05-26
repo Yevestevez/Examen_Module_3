@@ -1,3 +1,4 @@
+import { response } from 'express';
 import { ApiRepo } from './api.repo';
 
 describe('GIVEN <ApiRepo> class', () => {
@@ -27,9 +28,9 @@ describe('GIVEN <ApiRepo> class', () => {
 
         describe('AND response is NOT OK', () => {
             beforeEach(() => {
-                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
                     ok: false,
-                }) as unknown as Response;
+                } as unknown as Response);
             });
 
             test('THEN it should reject the promise', () => {
@@ -58,9 +59,9 @@ describe('GIVEN <ApiRepo> class', () => {
 
         describe('AND response is NOT OK', () => {
             beforeEach(() => {
-                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
                     ok: false,
-                }) as unknown as Response;
+                } as unknown as Response);
             });
 
             test('THEN it should reject the promise', () => {
@@ -89,9 +90,9 @@ describe('GIVEN <ApiRepo> class', () => {
 
         describe('AND response is NOT OK', () => {
             beforeEach(() => {
-                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
                     ok: false,
-                }) as unknown as Response;
+                } as unknown as Response);
             });
 
             test('THEN it should reject the promise', () => {
@@ -120,9 +121,9 @@ describe('GIVEN <ApiRepo> class', () => {
 
         describe('AND response is NOT OK', () => {
             beforeEach(() => {
-                vi.spyOn(globalThis, 'fetch').mockRejectedValue({
+                vi.spyOn(globalThis, 'fetch').mockResolvedValue({
                     ok: false,
-                }) as unknown as Response;
+                } as unknown as Response);
             });
 
             test('THEN it should reject the promise', () => {
