@@ -97,4 +97,77 @@ describe('GIVEN <ProductsController> class', () => {
             });
         });
     });
+
+    describe('WHEN <create> method is called', () => {
+        describe('AND repo returns valid data', () => {
+            test('THEN it should call <res.json> with product', async () => {
+                req.body = { name: 'New product' };
+
+                mockRepo.create.mockResolvedValueOnce({
+                    id: '1',
+                    name: req.body.name,
+                });
+
+                await controller.create(req, res, next);
+
+                expect(mockRepo.create).toHaveBeenCalled();
+                expect(res.json).toHaveBeenCalledWith({
+                    results: [{ id: '1', name: 'New product' }],
+                    error: '',
+                });
+                expect(next).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('AND repo throws an error', () => {
+            test('THEN it should call <next> with an error', async () => {
+                mockRepo.create.mockRejectedValueOnce(
+                    new Error('Error message'),
+                );
+
+                await controller.create(req, res, next);
+
+                expect(mockRepo.create).toHaveBeenCalled();
+                expect(next).toHaveBeenCalledWith(expect.any(Error));
+            });
+        });
+    });
+
+    describe('WHEN <update> method is called', () => {
+        describe('AND repo returns valid data', () => {
+            test('THEN it should call <res.json> with product', async () => {
+                req.params = { id: '1' };
+                req.body = {
+                    name: 'Updated product',
+                };
+
+                mockRepo.update.mockResolvedValueOnce({
+                    id: req.params.id,
+                    name: req.body.name,
+                });
+
+                await controller.update(req, res, next);
+
+                expect(mockRepo.update).toHaveBeenCalled();
+                expect(res.json).toHaveBeenCalledWith({
+                    results: [{ id: '1', name: 'Updated product' }],
+                    error: '',
+                });
+                expect(next).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('AND repo throws an error', () => {
+            test('THEN it should call <next> with an error', async () => {
+                mockRepo.update.mockRejectedValueOnce(
+                    new Error('Error message'),
+                );
+
+                await controller.update(req, res, next);
+
+                expect(mockRepo.update).toHaveBeenCalled();
+                expect(next).toHaveBeenCalledWith(expect.any(Error));
+            });
+        });
+    });
 });
