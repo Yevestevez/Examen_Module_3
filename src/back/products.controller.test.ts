@@ -170,4 +170,39 @@ describe('GIVEN <ProductsController> class', () => {
             });
         });
     });
+
+    describe('WHEN <delete> method is called', () => {
+        describe('AND repo returns valid data', () => {
+            test('THEN it should call <res.json> with product', async () => {
+                req.params = { id: '1' };
+
+                mockRepo.delete.mockResolvedValueOnce({
+                    id: req.params.id,
+                    name: 'Product 1',
+                });
+
+                await controller.delete(req, res, next);
+
+                expect(mockRepo.delete).toHaveBeenCalled();
+                expect(res.json).toHaveBeenCalledWith({
+                    results: [{ id: '1', name: 'Product 1' }],
+                    error: '',
+                });
+                expect(next).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('AND repo throws an error', () => {
+            test('THEN it should call <next> with an error', async () => {
+                mockRepo.delete.mockRejectedValueOnce(
+                    new Error('Error message'),
+                );
+
+                await controller.delete(req, res, next);
+
+                expect(mockRepo.delete).toHaveBeenCalled();
+                expect(next).toHaveBeenCalledWith(expect.any(Error));
+            });
+        });
+    });
 });
